@@ -1,4 +1,1 @@
-# Lab9_Starter
-Chih-Lin Wang
-
-Kevin Zhang
+# Lab 9 - Starter
