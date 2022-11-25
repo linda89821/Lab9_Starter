@@ -86,21 +86,126 @@
       <button>Trigger a Global Error</button>
     </section>
   </main>
-
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+  window.TrackJS && TrackJS.install({ 
+    token: "82f9626bbaf94155b7c3df78a727fd71"
+    // for more configuration options, see https://docs.trackjs.com
+  });
+  </script>
   <script>
     let form = document.querySelector('form');
+    const message = 'Sadly an error happened my friend'
+    //let error = new SyntaxError(message);
+    //let error = new ReferenceError(message);
+    
+    TrackJS.track();
     form.addEventListener('submit', e => {
-      e.preventDefault();
-      let output = document.querySelector('output');
-      let firstNum = document.querySelector('#first-num').value;
-      let secondNum = document.querySelector('#second-num').value;
-      let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try{
+        e.preventDefault();
+        let output = document.querySelector('output');
+        let firstNum = document.querySelector('#first-num').value;
+        let secondNum = document.querySelector('#second-num').value;
+        if(!firstNum||!secondNum){
+          throw new SyntaxError("Empty input");
+        }
+        let operator = document.querySelector('#operator').value;
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      }catch(err){
+        console.log(message);
+        throw new Error(err);
+      }
     });
+    
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
+    //console.log
+    errorBtns[0].addEventListener('click', ()=>{
+      console.log('Console Log Demo');
+    });
+    //console.error
+    errorBtns[1].addEventListener('click', ()=>{
+      console.error('Console Log Demo');
+    });
+    //console.count
+    errorBtns[2].addEventListener('click', ()=>{
+      console.count('Count Button');
+    });
+    //console.warn
+    errorBtns[3].addEventListener('click', ()=>{
+      console.warn('Count Warn Button');
+    });
+    //console.assert
+    errorBtns[4].addEventListener('click', ()=>{
+      const reason = 'The number does not equal 3';
+      const number = 2;
+      console.assert(number==3, {number,reason});
+    });
+    //console.clear
+    errorBtns[5].addEventListener('click', ()=>{
+      console.clear();
+    });
+    //console.dir
+    errorBtns[6].addEventListener('click', ()=>{
+      console.dir(errorBtns[6]);
+    });
+    //console.dirxml
+    errorBtns[7].addEventListener('click', ()=>{
+      console.dirxml(errorBtns[7]);
+    });
+    //console.Group Start
+    errorBtns[8].addEventListener('click', ()=>{
+      console.group('console.group');
+    });
+    //console.Group end
+    errorBtns[9].addEventListener('click', ()=>{
+      console.groupEnd('console.group');
+    });
+    //console.table
+    errorBtns[10].addEventListener('click', ()=>{
+      const table = [{
+        name:'Software Engineers',
+        num:110,
+      },
+      {
+        name:'Programming Languages',
+        num:130,
+      },
+      {
+        name:'Advanced Softwares',
+        num:112,
+      },
+      ]
+      console.table(table);
+    });
+    //console.start timer
+    errorBtns[11].addEventListener('click', ()=>{
+      console.time();
+    });
+    //console.end timer
+    errorBtns[12].addEventListener('click', ()=>{
+      console.timeEnd();
+    });
+    //console.trace
+    errorBtns[13].addEventListener('click', handleBtnClick);
+    function handleBtnClick(){
+      const deep = ()=>{deeper()};
+      const deeper = ()=>{deepest()};
+      const deepest = ()=>{console.trace()};
+      deep();
+    }
+    //console.global error
+    errorBtns[14].addEventListener('click', handleBtnClick);
+    function handleBtnClick(){
+      try{
+        console.log(boom);
+      }catch(err){
+        console.log('Sadly an error happened my friend');
+        throw new Error(err);
+      }
+    }
     // You may move this JS to another file if you wish
   </script>
 </body>
